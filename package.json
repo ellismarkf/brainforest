@@ -1,0 +1,19 @@
+{
+  "name": "wedding-site",
+  "version": "1.0.0",
+  "description": "app for accepting wedding rsvp's and monetary contributions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellismarkf/wedding-site.git"
+  },
+  "author": "ellismarkf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ellismarkf/wedding-site/issues"
+  },
+  "homepage": "https://github.com/ellismarkf/wedding-site#readme"
+}
