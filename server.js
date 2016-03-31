@@ -1,12 +1,13 @@
+var path = require('path')
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 5000
 
 app.set('port', port)
-app.use(express.static('dist'))
+app.use(express.static( path.join( __dirname, 'dist')))
 
 app.get('/', function (req, res) {
-	res.send('index.html')
+	res.send(__dirname + '/index.html')
 })
 
 app.listen(app.get('port'), function() {
