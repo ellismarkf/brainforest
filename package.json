@@ -4,7 +4,8 @@
   "description": "app for accepting wedding rsvp's and monetary contributions",
   "main": "index.js",
   "engines": {
-    "node": "4.2.1" 
+    "node": "4.2.1",
+    "npm": "2.14.7" 
   },
   "scripts": {
     "start": "npm run build && npm run server",
