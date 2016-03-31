@@ -4,10 +4,14 @@ var app = express();
 var port = process.env.PORT || 5000
 
 app.set('port', port)
-app.use(express.static( path.join( __dirname, 'dist')))
+app.use('/static', express.static( path.join( __dirname, 'dist')))
 
 app.get('/', function (req, res) {
-	res.send(__dirname + '/dist/index.html')
+	res.sendFile(path.join(__dirname, 'dist/index.html'))
+})
+
+app.get('/dist/bundle.js', function(req, res) {
+	res.sendFile(path.join(__dirname, 'dist/bundle.js'))
 })
 
 app.listen(app.get('port'), function() {
