@@ -7,7 +7,7 @@ app.set('port', port)
 app.use(express.static( path.join( __dirname, 'dist')))
 
 app.get('/', function (req, res) {
-	res.send(__dirname + '/index.html')
+	res.send(__dirname + '/dist/index.html')
 })
 
 app.listen(app.get('port'), function() {
