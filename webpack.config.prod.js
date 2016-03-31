@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
 	entry: ['./index.js'],
@@ -13,6 +14,11 @@ module.exports = {
 			compressor: {
 				warnings: false
 			}
+		}),
+		new HtmlWebpackPlugin({
+			title: "Mark &amp; Lisy's Wedding",
+			template: 'index-html.ejs',
+			inject: 'body'
 		})
 	],
 	module: {
