@@ -10,9 +10,9 @@ class DonateForm extends Component {
 	}
 	
 	render() {
-		console.log(validate)
+
 		return (
-			<form id="donate" method="post" action="/checkout">
+			<form id="donate" method="post" action="/donate" encType='multipart/form-data'>
 			  	<div id="payment-form"></div>
 			  	<input type="submit" value="Pay $10" />
 			</form>		

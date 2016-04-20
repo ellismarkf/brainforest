@@ -1,11 +1,11 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var webpack = require('webpack')
 
 module.exports = {
 	entry: {
 		app: [
-			'./index.js',
-		  	"webpack-dev-server/client?http://localhost:8080/",
-		  	"webpack/hot/dev-server"
+			'webpack-hot-middleware/client?reload=true',
+			'./index.js'
 		]
 	},
 	output: {
@@ -22,6 +22,12 @@ module.exports = {
 			title: "Mark &amp; Lisy's Wedding",
 			template: 'index-html.ejs',
 			inject: 'body'
+		}),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin(),
+		new webpack.DefinePlugin({
+		  	'process.env.NODE_ENV': JSON.stringify('development')
 		})
 	]
 }

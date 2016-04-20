@@ -31,10 +31,16 @@
     "braintree": "^1.36.0",
     "braintree-web": "^2.22.2",
     "card-validator": "^2.2.7",
+    "es6-promise": "^3.1.2",
     "express": "^4.13.4",
+    "form-serialize": "^0.7.1",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.11.1",
+    "multer": "^1.1.0",
     "react": "^15.0.1",
     "react-addons-css-transition-group": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "react-dom": "^15.0.1",
+    "react-router": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.2",
@@ -45,6 +51,7 @@
     "html-webpack-plugin": "^2.14.0",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.10.0"
   }
 }
