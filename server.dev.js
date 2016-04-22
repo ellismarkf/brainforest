@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-const enforce = require('express-sslify');
 const formData = require('multer')();
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -8,9 +7,9 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
 const braintree = require('braintree')
 const app = express();
-
-const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 3000
+app.set('port', port)
+
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "3tm2p5bx7s85jjr2",
@@ -18,50 +17,33 @@ const gateway = braintree.connect({
   privateKey: "78e59c7032b1b311639e0b5422c27e56"
 });
 
-app.set('port', port)
+console.log('running in development mode')
+const compiler = webpack(config);
+const middleware = webpackMiddleware(compiler, {
+	publicPath: config.output.publicPath,
+	contentBase: 'src',
+	stats: {
+		colors: true,
+		hash: true,
+		timings: true,
+		chunks: true,
+		chunkModules: true,
+		modules: true
+	}
+});
 
-if (isDeveloping) {
-	console.log('running in development mode')
-	const compiler = webpack(config);
-	const middleware = webpackMiddleware(compiler, {
-		publicPath: config.output.publicPath,
-		contentBase: 'src',
-		stats: {
-			colors: true,
-			hash: false,
-			timings: true,
-			chunks: false,
-			chunkModules: false,
-			modules: false
-		}
-	});
+app.use(middleware);
+app.use(webpackHotMiddleware(compiler));
+app.use("/client_token", function (req, res, next) {
+  gateway.clientToken.generate({}, function (err, response) {
+    res.json({ token: response.clientToken });
+  });
+});
 
-	app.use(middleware);
-	app.use(webpackHotMiddleware(compiler));
-	app.use("/client_token", function (req, res, next) {
-	  gateway.clientToken.generate({}, function (err, response) {
-	    res.json({ token: response.clientToken });
-	  });
-	});
-
-	app.get('*', function response(req, res) {
-		res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
-		res.end();
-	});
-
-} else {
-
-	app.use(enforce.HTTPS())
-	app.use("/client_token", function (req, res, next) {
-	  gateway.clientToken.generate({}, function (err, response) {
-	    res.json({ token: response.clientToken });
-	  });
-	});
-	app.use('/static', express.static( path.join( __dirname, 'dist')))
-	app.get('*', function response(req, res) {
-		res.sendFile(path.join(__dirname, 'dist/index.html'));
-	});
-}
+app.get('*', function response(req, res) {
+	res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
+	res.end();
+});
 
 app.post("/donate", formData.single(), function (req, res, next) {
 	var nonce = req.body.payment_method_nonce
