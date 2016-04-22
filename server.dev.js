@@ -69,7 +69,7 @@ app.post("/donate", formData.single(), function (req, res, next) {
 	});
 });
 
-app.listen(app.get('port'), 'localhost', function(err) {
+app.listen(app.get('port'), '0.0.0.0', function(err) {
 	if (err) {
 		console.log(err);
 	}
