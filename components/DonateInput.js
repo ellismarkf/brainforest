@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class DonateInput extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { value: null }
+		this.state = { value: '', inputValid: null }
 	}
 
 	onChange = (e) => {
@@ -11,10 +11,10 @@ class DonateInput extends Component {
 	}
 
 	render() {
-		const { name } = this.props
+		const { type, validator } = this.props
 		const { value } = this.state
 		return(
-			<input data-braintree-name={name} value={value} onChange={this.onChange} />
+			<input value={value} type={type} onChange={this.onChange} className='card-field'/>
 		)
 	}
 }
