@@ -2,7 +2,6 @@
   "name": "wedding-site",
   "version": "1.0.0",
   "description": "app for accepting wedding rsvp's and monetary contributions",
-  "main": "index.js",
   "engines": {
     "node": "5.10.1",
     "npm": "3.8.3"
