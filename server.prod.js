@@ -14,7 +14,7 @@ const gateway = braintree.connect({
   privateKey: "78e59c7032b1b311639e0b5422c27e56"
 });
 
-app.use(enforce.HTTPS())
+app.use(enforce.HTTPS({ trustProtoHeader: true }))
 app.use("/client_token", function (req, res, next) {
   gateway.clientToken.generate({}, function (err, response) {
     res.json({ token: response.clientToken });
