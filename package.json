@@ -13,7 +13,7 @@
     "start:prod": "npm run build && npm run server",
     "start:dev": "webpack-dev-server --content-base /dist --hot --module-bind",
     "build": "webpack -p --config webpack.config.prod.js",
-    "server": "node server.js",
+    "server": "node server.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
