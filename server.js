@@ -1,16 +1,16 @@
 const path = require('path');
 const express = require('express');
-// const enforce = require('express-sslify');
+const enforce = require('express-sslify');
 const formData = require('multer')();
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
 const braintree = require('braintree')
+const app = express();
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
-const port = isDeveloping ? 3000 : process.env.PORT;
-const app = express();
+const port = process.env.PORT || 3000
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
   merchantId: "3tm2p5bx7s85jjr2",
@@ -37,7 +37,6 @@ if (isDeveloping) {
 	});
 
 	app.use(middleware);
-	// app.use(enforce.HTTPS())
 	app.use(webpackHotMiddleware(compiler));
 	app.use("/client_token", function (req, res, next) {
 	  gateway.clientToken.generate({}, function (err, response) {
@@ -52,7 +51,7 @@ if (isDeveloping) {
 
 } else {
 
-	// app.use(enforce.HTTPS())
+	app.use(enforce.HTTPS())
 	app.use("/client_token", function (req, res, next) {
 	  gateway.clientToken.generate({}, function (err, response) {
 	    res.json({ token: response.clientToken });
