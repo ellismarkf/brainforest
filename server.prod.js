@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const enforce = require('express-sslify');
+const helmet = require('helmet')
 const formData = require('multer')();
 const braintree = require('braintree')
 const app = express();
@@ -15,6 +16,7 @@ const gateway = braintree.connect({
 });
 
 app.use(enforce.HTTPS({ trustProtoHeader: true }))
+app.use(helmet())
 app.use("/client_token", function (req, res, next) {
   gateway.clientToken.generate({}, function (err, response) {
     res.json({ token: response.clientToken });
