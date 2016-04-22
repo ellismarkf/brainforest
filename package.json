@@ -10,7 +10,7 @@
     "start": "npm run server",
     "heroku-postbuild": "npm run build",
     "start:prod": "npm run build && npm run server",
-    "start:dev": "webpack-dev-server --content-base /dist --hot --module-bind",
+    "start:dev": "node server.dev.js",
     "build": "webpack -p --config webpack.config.prod.js",
     "server": "node server.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1"
