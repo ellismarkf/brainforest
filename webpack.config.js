@@ -1,3 +1,4 @@
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var webpack = require('webpack')
 
@@ -14,7 +15,24 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
+			{
+				 test: /\.js$/
+				,loader: 'babel-loader'
+				,exclude: /node_modules/
+			}
+		,
+			{
+			     test: /\.css$/
+			    ,loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+			}
+		,
+			{
+			     test: /\.less$/
+			    ,loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+			    ,exclude: /node_modules/
+			}
+		,
+			{ test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
 		]	
 	},
 	plugins: [
@@ -23,6 +41,7 @@ module.exports = {
 			template: 'index-html.ejs',
 			inject: 'body'
 		}),
+		new ExtractTextPlugin("style.css"),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),

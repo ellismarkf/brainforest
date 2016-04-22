@@ -9,6 +9,28 @@ module.exports = {
 		filename: 'bundle.js',
 		publicPath: '/static/'
 	},
+	module: {
+		loaders: [
+			{
+				 test: /\.js$/
+				,loader: 'babel-loader'
+				,exclude: /node_modules/
+			}
+		,
+			{
+			     test: /\.css$/
+			    ,loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+			}
+		,
+			{
+			     test: /\.less$/
+			    ,loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+			    ,exclude: /node_modules/
+			}
+		,
+			{ test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
+		]	
+	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin({
 			compressor: {
@@ -19,11 +41,11 @@ module.exports = {
 			title: "Mark &amp; Lisy's Wedding",
 			template: 'index-html.ejs',
 			inject: 'body'
+		}),
+		new ExtractTextPlugin("style.css"),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.DefinePlugin({
+		  	'process.env.NODE_ENV': JSON.stringify('production')
 		})
-	],
-	module: {
-		loaders: [
-			{ test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ }
-		]
-	}
+	]
 }

@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+// const enforce = require('express-sslify');
 const formData = require('multer')();
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -19,8 +20,8 @@ const gateway = braintree.connect({
 
 app.set('port', port)
 
-
 if (isDeveloping) {
+	console.log('running in development mode')
 	const compiler = webpack(config);
 	const middleware = webpackMiddleware(compiler, {
 		publicPath: config.output.publicPath,
@@ -36,6 +37,7 @@ if (isDeveloping) {
 	});
 
 	app.use(middleware);
+	// app.use(enforce.HTTPS())
 	app.use(webpackHotMiddleware(compiler));
 	app.use("/client_token", function (req, res, next) {
 	  gateway.clientToken.generate({}, function (err, response) {
@@ -50,6 +52,12 @@ if (isDeveloping) {
 
 } else {
 
+	// app.use(enforce.HTTPS())
+	app.use("/client_token", function (req, res, next) {
+	  gateway.clientToken.generate({}, function (err, response) {
+	    res.json({ token: response.clientToken });
+	  });
+	});
 	app.use('/static', express.static( path.join( __dirname, 'dist')))
 	app.get('*', function response(req, res) {
 		res.sendFile(path.join(__dirname, 'dist/index.html'));
@@ -80,7 +88,7 @@ app.post("/donate", formData.single(), function (req, res, next) {
 	});
 });
 
-app.listen(app.get('port'), '0.0.0.0', function(err) {
+app.listen(app.get('port'), 'localhost', function(err) {
 	if (err) {
 		console.log(err);
 	}
