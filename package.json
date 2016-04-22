@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "npm run server",
-    "postinstall": "webpack -p --config webpack.config.prod.js",
+    "heroku-postbuild": "npm run build",
     "start:prod": "npm run build && npm run server",
     "start:dev": "webpack-dev-server --content-base /dist --hot --module-bind",
     "build": "webpack -p --config webpack.config.prod.js",
