@@ -1,5 +1,55 @@
-.card-field {
+@import './animations.less';
+
+.donate-form {
+    font-family: "Helvetica Neue",Helvetica,Arial,Sans-serif;
+}
+
+.input-row {
     display: block;
+    border-top: solid 1px #DEE2E5;
+    border-bottom: solid 1px #DEE2E5;
+    padding: 8px 0;
+    margin-top: -1px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transition: background-color 131ms linear;
+    -moz-transition: background-color 131ms linear;
+    transition: background-color 131ms linear
+}
+
+.input-row-active {
+    .input-row;
+    background-color: #f9f9f9;
+}
+
+.invalid-bottom-bar {
+    -webkit-animation: invalidBarAnimation 1600ms linear both;
+    animation: invalidBarAnimation 1600ms linear both
+}
+
+.invalid-bottom-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #D0021B;
+    height: 10px;
+    width: 100%;
+    -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1);
+    -moz-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1);
+    -ms-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1);
+    -o-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1);
+    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)
+}
+
+.input-field {
+    display: block;
+    width: 100%;
     font-weight: 200;
     font-size: 16px;
     height: 30px;
@@ -14,6 +64,38 @@
     background-image: none;
     -webkit-tap-highlight-color: transparent;
 }
+
+.input-field-invalid {
+    .input-field;
+    border-bottom-color: #D0021B;
+    background: 0 0;
+    -webkit-animation: cardFieldAnimation 800ms linear both;
+    animation: cardFieldAnimation 800ms linear both;
+    color: #D0021B;
+}
+
+.input-field-label {
+    color: #6E787F;
+    font-size: 12px;
+    position: absolute;
+    left: 14px;
+    top: 6px;
+    display: block;
+    -webkit-transform: translate3d(0, 6px, 0);
+    -moz-transform: translate3d(0, 6px, 0);
+    -ms-transform: translate3d(0, 6px, 0);
+    -o-transform: translate3d(0, 6px, 0);
+    transform: translate3d(0, 6px, 0);
+    -webkit-transition: -webkit-transform, opacity;
+    -moz-transition: -moz-transform, opacity;
+    transition: transform, opacity
+}
+
+.input-field-label-invalid {
+    .input-field-label;
+    color: #D0021B;
+}
+
 .payment-method-icon {
     position: absolute;
     left: auto;

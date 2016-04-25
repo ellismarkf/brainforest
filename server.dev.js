@@ -46,7 +46,8 @@ app.get('*', function response(req, res) {
 });
 
 app.post("/donate", formData.single(), function (req, res, next) {
-	var nonce = req.body.payment_method_nonce
+	var nonce = req.body.paymentMethodNonce
+	console.log(nonce)
 		// Use payment method nonce here
 	gateway.transaction.sale({
 		amount: '5.00',
