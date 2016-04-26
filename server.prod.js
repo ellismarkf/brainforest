@@ -29,11 +29,13 @@ app.get('*', function response(req, res) {
 
 
 app.post("/donate", formData.single(), function (req, res, next) {
-	var nonce = req.body.payment_method_nonce
+	var nonce = req.body.paymentMethodNonce
+	var amount = req.body.amount
+	console.log(nonce)
 		// Use payment method nonce here
 	gateway.transaction.sale({
-		amount: '5.00',
-		paymentMethodNonce: 'fake-valid-visa-nonce',
+		amount: amount,
+		paymentMethodNonce: nonce,
 		options: {
 			submitForSettlement: true
 		}
@@ -42,12 +44,21 @@ app.post("/donate", formData.single(), function (req, res, next) {
 		if (result) {
 			if (result.success) {
 				console.log("Transaction ID: " + result.transaction.id)
-				res.json({ success: true, txn_id: result.transaction.id })
+				res.json({ success: true, txn_id: result.transaction.id, result: result })
 			} else {
-				console.log(result.message)
+				var deepErrors = result.errors.deepErrors();
+
+				deepErrors.forEach( err => {
+					console.log(err.attribute)
+					console.log(err.code)
+					console.log(err.message)
+				})
+
+				res.json({ success: false, err: result.message, deepErrors: deepErrors })
 			}
 		} else {
 			console.log(err)
+			res.json({ success: false, err: err })
 		}
 	});
 });

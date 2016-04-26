@@ -125,7 +125,8 @@ class DonateForm extends Component {
 	getRawVals = (name, value) => {
 		const regexMap = {
 			number: /\s/g,
-			expirationDate: /\D/g
+			expirationDate: /\D/g,
+			final: /\s/g
 		}
 		return value.replace(regexMap[name], '').split('')
 	}
@@ -162,12 +163,14 @@ class DonateForm extends Component {
 		const { token, fields } = this.props
 		const braintreeClient = new braintree.api.Client({ clientToken: token })
 		const paymentMethod = fields.reduce( (result, field) => {
-			const fieldVals = field.name === 'amount' ? {} : { [field.name]: field.value }
+			const rawVal = field.name === 'cardholderName' ? field.value : this.getRawVals('final', field.value).join('')
+			const fieldVals = field.name === 'amount' ? {} : { [field.name]: rawVal }
 			return Object.assign({}, result, fieldVals)
 		}, {})
 		const amt = fields.find( f => f.name === 'amount' ).value
 		const data = new FormData()
 		data.append('amount', amt)
+
 		braintreeClient.tokenizeCard({...paymentMethod}, (err, nonce) => {
 			data.append('paymentMethodNonce', nonce)
 			fetch('/donate', {
@@ -177,7 +180,7 @@ class DonateForm extends Component {
 			.then( res => res.json())
 			.then( json => {
 				if (json.success) {
-					console.log('great success!')
+					console.log(json)
 				} else {
 					const { deepErrors } = json
 					const capitalizedAttributes = deepErrors.map( err => {

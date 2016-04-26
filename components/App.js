@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import rsvpSubmit from '../utils/rsvpSubmit'
 import RsvpForm from './RsvpForm'
 import DonateForm from './DonateForm'
-import braintree from 'braintree-web'
-import fetch from 'isomorphic-fetch'
 import DevTools from './DevTools'
 
 const App = () => (
