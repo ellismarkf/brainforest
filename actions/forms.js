@@ -40,6 +40,23 @@ export const requestClientToken = () => {
 	}
 }
 
+export const updateFormStatus = (submitted) => {
+	return {
+		type: 'UPDATE_FORM_STATUS',
+		submitted
+	}
+}
+
+export const updateFieldErrorMsg = ({ name, errorMsg, isValid, isPotentiallyValid }) => {
+	return {
+		type: 'UPDATE_FIELD_ERROR_MSG',
+		name,
+		errorMsg,
+		isValid,
+		isPotentiallyValid
+	}
+}
+
 const receiveClientToken = (token) => {
 	return {
 		type: 'RECEIVE_TOKEN',

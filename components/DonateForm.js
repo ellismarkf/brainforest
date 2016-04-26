@@ -3,7 +3,14 @@ import { connect } from 'react-redux'
 import braintree from 'braintree-web'
 import valid from 'card-validator'
 import FormField from './FormField'
-import { requestClientToken, updateFieldValue, updateFieldFocus, updateCardInfo } from '../actions/forms'
+import DropInPaymentUI from './DropInPaymentUI'
+import {
+	requestClientToken,
+	updateFieldValue,
+	updateFieldFocus,
+	updateCardInfo,
+	updateFormStatus,
+	updateFieldErrorMsg } from '../actions/forms'
 import fetch from 'isomorphic-fetch'
 
 class DonateForm extends Component {
@@ -14,30 +21,38 @@ class DonateForm extends Component {
 	}
 
 	render() {
-		const { token, dispatch, fields } = this.props
+		const { token, dispatch, fields, submitted } = this.props
 		const readyToSubmit = fields.reduce( (result, val, index, arr) => {
 			return val.isValid && result
 		}, true)
 		return (
-			<form id="donate" onSubmit={this.onSubmit} encType='multipart/form-data' className='donate-form'>
-			  	{fields.map( (field, index) =>
-			  		<FormField
-			  			type='text'
-			  			name={field.name}
-			  			card={field.card || null}
-			  			placeholder={field.placeholder}
-			  			label={field.label}
-			  			onFocus={ () => this.onFocus(field.name, true) }
-			  			onBlur={ () => this.onBlur(field.name, false) }
-			  			onChange={ e => this.onChange(e, field.name, ) }
-			  			key={index}
-			  			value={field.value}
-			  			focused={field.focused}
-			  			isPotentiallyValid={field.isPotentiallyValid}
-			  		/>
-			  	)}
-			  	<input type="submit" value="Pay $10" disabled={!readyToSubmit} />
-			</form>
+			<div>
+				{!submitted &&
+					<form id="donate" onSubmit={this.onSubmit} encType='multipart/form-data' className='donate-form'>
+					  	{fields.map( (field, index) =>
+					  		<FormField
+					  			type='text'
+					  			name={field.name}
+					  			card={field.card || null}
+					  			placeholder={field.placeholder}
+					  			label={field.label}
+					  			onFocus={ () => this.onFocus(field.name, true) }
+					  			onBlur={ () => this.onBlur(field.name, false) }
+					  			onChange={ e => this.onChange(e, field.name, ) }
+					  			key={index}
+					  			value={field.value}
+					  			focused={field.focused}
+					  			isPotentiallyValid={field.isPotentiallyValid}
+					  		/>
+					  	)}
+					  	<input type="submit" value="Pay $10" disabled={!readyToSubmit} />
+					</form>
+				}
+				{submitted &&
+					<h1>Thank you so much for helping us on our way!</h1>
+				}
+				<DropInPaymentUI />
+			</div>
 		)
 	}
 
@@ -63,6 +78,8 @@ class DonateForm extends Component {
 				const rawVals = this.getRawVals(name, value)
 				const cardValidationInfo = validate(rawVals.join(''))
 				const { isPotentiallyValid, isValid } = cardValidationInfo
+				const cvvField = fields.find( f => f.name === 'cvv' )
+				const cvv = cvvField.value
 				// SIDE EFFECT </3
 				if (!isPotentiallyValid) {
 					const emptyCardInfo = { type: '', isAmex: false, gaps: [], card: {} }
@@ -76,6 +93,13 @@ class DonateForm extends Component {
 					const { type, gaps, isAmex } = card
 					const cardInfo = { type, gaps, isAmex }
 					dispatch(updateCardInfo({ name, card: {...cardInfo} }))
+					if ( !isAmex && cvv.length > 3 ) {
+						dispatch(updateFieldValue({ name: 'cvv', value: cvv, isPotentiallyValid: false, isValid: false }))
+					}
+					if (isAmex && !cvv.isPotentiallyValid) {
+						const cvvv = valid.cvv(cvv)
+						dispatch(updateFieldValue({ name: 'cvv', value: cvv, isPotentiallyValid: cvvv.isPotentiallyValid, isValid: cvvv.isValid }))
+					}
 				}
 				return { name, value: formattedCardVals, isPotentiallyValid, isValid }
 			},
@@ -116,8 +140,11 @@ class DonateForm extends Component {
 	onBlur = (name, focused) => {
 		const { dispatch, fields } = this.props
 		const currentField = fields.find( field => name === field.name )
-		if ( currentField.required && currentField.value === '' ) {
-			dispatch(updateFieldValue({ name, value: currentField.value, isPotentiallyValid: false, isValid:false }))
+		const { required, value, isValid, isPotentiallyValid } = currentField
+		const requiredFieldEmpty = required && value === ''
+		const fieldNotValid = !isValid ? true : false
+		if ( requiredFieldEmpty || fieldNotValid ) {
+			dispatch(updateFieldValue({ name, value, isPotentiallyValid: false, isValid: false }))
 		}
 		dispatch(updateFieldFocus({ name, focused }))
 	}
@@ -160,7 +187,7 @@ class DonateForm extends Component {
 
 	onSubmit = (e) => {
 		e.preventDefault()
-		const { token, fields } = this.props
+		const { token, fields, dispatch } = this.props
 		const braintreeClient = new braintree.api.Client({ clientToken: token })
 		const paymentMethod = fields.reduce( (result, field) => {
 			const rawVal = field.name === 'cardholderName' ? field.value : this.getRawVals('final', field.value).join('')
@@ -179,31 +206,47 @@ class DonateForm extends Component {
 			})
 			.then( res => res.json())
 			.then( json => {
-				if (json.success) {
+				if (json.result.success) {
 					console.log(json)
+					dispatch(updateFormStatus(true))
 				} else {
+					console.log(json)
 					const { deepErrors } = json
-					const capitalizedAttributes = deepErrors.map( err => {
-						return err.attribute.split('_').map( (a, i) => {
-							if ( i > 0) {
-								return a[0].toUpperCase() + a.slice(1)
-							} else {
-								return a
+					if (deepErrors) {
+						const capitalizedAttributes = deepErrors.map( err => {
+							const { message } = err
+							const name = err.attribute.split('_').map( (a, i) => {
+								if ( i > 0) {
+									return a[0].toUpperCase() + a.slice(1)
+								} else {
+									return a
+								}
+							}).join('')
+							return {
+								name,
+								errorMsg: message,
+								isValid: false,
+								isPotentiallyValid: false
 							}
-						}).join('')
-					})
-					console.log(json.err)
-					console.log(capitalizedAttributes)
+						})
+						console.log(capitalizedAttributes)
+						capitalizedAttributes.forEach( a => {
+							const { name, errorMsg, isValid, isPotentiallyValid } = a
+							dispatch(updateFieldErrorMsg({ name, errorMsg, isValid, isPotentiallyValid }))
+						})
+					}
 				}
 			})
 		})
 	}
-
 }
 
 const mapStateToProps = (state) => ({
 	fields: state.donateForm.fields,
-	token: state.donateForm.token
+	token: state.donateForm.token,
+	hasSubmissionError: state.donateForm.hasSubmissionError,
+	submissionErrorMsg: state.donateForm.submissionErrorMsg,
+	submitted: state.donateForm.submitted 
 })
 
 export default connect(mapStateToProps)(DonateForm)

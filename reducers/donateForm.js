@@ -9,6 +9,7 @@ const initialState = {
 			label: 'Card Number',
 			placeholder: 'Card Number',
 			required: true,
+			errorMsg: '',
 			card: {
 			  	type: '',
 			  	isAmex: false,
@@ -22,7 +23,8 @@ const initialState = {
 			focused: false,
 			label: 'MMYY',
 			placeholder: 'Expiration Date',
-			required: true
+			required: true,
+			errorMsg: ''
 		}, {
 			name: 'cardholderName',
 			value: '',
@@ -31,7 +33,8 @@ const initialState = {
 			focused: false,
 			label: 'Cardholder Name',
 			placeholder: 'Cardholder Name',
-			required: true
+			required: true,
+			errorMsg: ''
 		} , {
 			name: 'cvv',
 			value: '',
@@ -40,7 +43,8 @@ const initialState = {
 			focused: false,
 			label: 'CVV',
 			placeholder: 'CVV',
-			required: true
+			required: true,
+			errorMsg: ''
 		} , {
 			name: 'amount',
 			value: '',
@@ -49,10 +53,14 @@ const initialState = {
 			focused: false,
 			label: 'Amount',
 			placeholder: 'Amount',
-			required: true
+			required: true,
+			errorMsg: ''
 		}
 	],
-	token: null
+	token: null,
+	hasSubmissionError: false,
+	submissionErrorMsg: '',
+	submitted: false
 }
 
 const donateForm = (state = initialState, action) => {
@@ -62,9 +70,15 @@ const donateForm = (state = initialState, action) => {
 			return Object.assign({}, state, {
 				token
 			})
+		case 'UPDATE_FORM_STATUS':
+			const { submitted } = action
+			return Object.assign({}, state, {
+				submitted
+			})
 		case 'UPDATE_FIELD_VALUE':
 		case 'UPDATE_FIELD_FOCUS':
 		case 'UPDATE_CARD_INFO':
+		case 'UPDATE_FIELD_ERROR_MSG':
 			return Object.assign({}, state, {
 				fields: state.fields.map( f => field(f, action) )
 			})
@@ -91,6 +105,13 @@ const field = (state, action) => {
 		case 'UPDATE_CARD_INFO':
 			return Object.assign({}, state, {
 				card: card(state.card, action)
+			})
+		case 'UPDATE_FIELD_ERROR_MSG':
+			const { errorMsg } = action
+			return Object.assign({}, state, {
+				errorMsg,
+				isValid,
+				isPotentiallyValid
 			})
 		default:
 			return state
