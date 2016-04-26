@@ -9,9 +9,9 @@ const App = () => (
 		<h1>Mark and Lisy are getting married!</h1>
 		<RsvpForm onSubmit={rsvpSubmit} />
 		<DonateForm />
+		{__DEVTOOLS__ &&
+			<DevTools />}
 	</div>
 )
-		// {__DEVTOOLS__ &&
-		// 	<DevTools />}
 
 export default App

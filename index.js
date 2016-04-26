@@ -13,7 +13,7 @@ const store = createStore(
 	weddingApp,
 	compose(
 		applyMiddleware(thunk),
-		// DevTools.instrument()
+		DevTools.instrument()
 	)
 )
 
