@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import braintree from 'braintree-web'
 import valid from 'card-validator'
 import FormField from './FormField'
-import CardInput from './CardInput'
-import ExpirationDateInput from './ExpirationDateInput'
 import { requestClientToken, updateFieldValue, updateFieldFocus, updateCardInfo } from '../actions/forms'
 import fetch from 'isomorphic-fetch'
 
@@ -14,7 +12,7 @@ class DonateForm extends Component {
 		const { dispatch } = this.props
 		dispatch(requestClientToken())
 	}
-	
+
 	render() {
 		const { token, dispatch, fields } = this.props
 		const readyToSubmit = fields.reduce( (result, val, index, arr) => {
@@ -39,7 +37,7 @@ class DonateForm extends Component {
 			  		/>
 			  	)}
 			  	<input type="submit" value="Pay $10" disabled={!readyToSubmit} />
-			</form>		
+			</form>
 		)
 	}
 
@@ -107,7 +105,6 @@ class DonateForm extends Component {
 			}
 		}
 		const inputVals = handlerMap[name]()
-		
 		dispatch(updateFieldValue({...inputVals}))
 	}
 
@@ -178,7 +175,24 @@ class DonateForm extends Component {
 				body: data
 			})
 			.then( res => res.json())
-			.then( json => console.log(json) )
+			.then( json => {
+				if (json.success) {
+					console.log('great success!')
+				} else {
+					const { deepErrors } = json
+					const capitalizedAttributes = deepErrors.map( err => {
+						return err.attribute.split('_').map( (a, i) => {
+							if ( i > 0) {
+								return a[0].toUpperCase() + a.slice(1)
+							} else {
+								return a
+							}
+						}).join('')
+					})
+					console.log(json.err)
+					console.log(capitalizedAttributes)
+				}
+			})
 		})
 	}
 
