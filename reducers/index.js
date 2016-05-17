@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import donateForm from './donateForm'
+import form from './form'
 
-const weddingApp = combineReducers({
-	donateForm
+const brainforest = combineReducers({
+	form
 })
 
-export default weddingApp
+export default brainforest

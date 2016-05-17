@@ -45,16 +45,6 @@ const initialState = {
 			placeholder: 'CVV',
 			required: true,
 			errorMsg: ''
-		} , {
-			name: 'amount',
-			value: '',
-			isValid: false,
-			isPotentiallyValid: true,
-			focused: false,
-			label: 'Amount',
-			placeholder: 'Amount',
-			required: true,
-			errorMsg: ''
 		}
 	],
 	token: null,
@@ -63,7 +53,7 @@ const initialState = {
 	submitted: false
 }
 
-const donateForm = (state = initialState, action) => {
+const form = (state = initialState, action) => {
 	switch (action.type) {
 		case 'RECEIVE_TOKEN':
 			const { token } = action
@@ -134,4 +124,4 @@ const card = (state, action) => {
 	}
 }
 
-export default donateForm
+export default form

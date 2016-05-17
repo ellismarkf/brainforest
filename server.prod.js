@@ -18,9 +18,9 @@ const gateway = braintree.connect({
 app.use(enforce.HTTPS({ trustProtoHeader: true }))
 app.use(helmet())
 app.use("/client_token", function (req, res, next) {
-  gateway.clientToken.generate({}, function (err, response) {
-    res.json({ token: response.clientToken });
-  });
+	gateway.clientToken.generate({}, function (err, response) {
+    	res.json({ token: response.clientToken });
+  	});
 });
 app.use('/static', express.static( path.join( __dirname, 'dist')))
 app.get('*', function response(req, res) {

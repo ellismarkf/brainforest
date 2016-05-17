@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import braintree from 'braintree-web'
 import valid from 'card-validator'
 import FormField from './FormField'
-import DropInPaymentUI from './DropInPaymentUI'
 import {
 	requestClientToken,
 	updateFieldValue,
@@ -45,13 +44,11 @@ class DonateForm extends Component {
 					  			isPotentiallyValid={field.isPotentiallyValid}
 					  		/>
 					  	)}
-					  	<input type="submit" value="Pay $10" disabled={!readyToSubmit} />
 					</form>
 				}
 				{submitted &&
-					<h1>Thank you so much for helping us on our way!</h1>
+					<h1>Payment submitted</h1>
 				}
-				<DropInPaymentUI />
 			</div>
 		)
 	}
@@ -242,11 +239,11 @@ class DonateForm extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	fields: state.donateForm.fields,
-	token: state.donateForm.token,
-	hasSubmissionError: state.donateForm.hasSubmissionError,
-	submissionErrorMsg: state.donateForm.submissionErrorMsg,
-	submitted: state.donateForm.submitted 
+	fields: state.form.fields,
+	token: state.form.token,
+	hasSubmissionError: state.form.hasSubmissionError,
+	submissionErrorMsg: state.form.submissionErrorMsg,
+	submitted: state.form.submitted 
 })
 
 export default connect(mapStateToProps)(DonateForm)

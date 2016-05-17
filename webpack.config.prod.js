@@ -39,7 +39,7 @@ module.exports = {
 			}
 		}),
 		new HtmlWebpackPlugin({
-			title: "Mark &amp; Lisy's Wedding",
+			title: "Brainforest Demo",
 			template: 'index-html.ejs',
 			inject: 'body'
 		}),
