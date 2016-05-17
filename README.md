@@ -6,4 +6,4 @@ This project is (currently) a boilerplate for adding Braintree to a React/Redux 
 
 ## overview
 
-*brainforest* is essentially a [direct tokenization implementation](https://developers.braintreepayments.com/reference/client-reference/javascript/v2/credit-cards#credit-card-direct-tokenization) of Braintree's client API, powered by a Node server that connects to Braintree's server API.
+**brainforest** is essentially a [direct tokenization implementation](https://developers.braintreepayments.com/reference/client-reference/javascript/v2/credit-cards#credit-card-direct-tokenization) of Braintree's client API, powered by a Node server that connects to Braintree's server API.
