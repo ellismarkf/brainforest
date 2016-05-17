@@ -12,9 +12,9 @@ app.set('port', port)
 
 const gateway = braintree.connect({
   environment: braintree.Environment.Sandbox,
-  merchantId: "3tm2p5bx7s85jjr2",
-  publicKey: "g9vh5ftwjvbzky74",
-  privateKey: "78e59c7032b1b311639e0b5422c27e56"
+  merchantId: "yourSandboxMerchantId",
+  publicKey: "yourSandboxPublicKey",
+  privateKey: "yourSandboxPrivateKey"
 });
 
 console.log('running in development mode')
