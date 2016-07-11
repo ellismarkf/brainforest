@@ -17,15 +17,22 @@ This project is (currently) a reference implementation for adding Braintree to a
 
 ## Usage
 
+First, you'll need a Braintree account.  I won't pretend to be able to explain the application steps as well as Braintree themselves, so instead will just refer to [their instructions](https://www.braintreepayments.com/sandbox)
+
+After setting up an account, you'll need to configure your Sandbox account and obtain your merchandId, publicKey, and privateKey.
+
 _To run the demo locally:_
 
 ```
 git clone https://github.com/ellismarkf/brainforest.git
 cd brainforest
 npm install
-npm run start:dev
 ```
-Then visit `http://localhost:3000` in your browser.
+In [`server.dev.js`](https://github.com/ellismarkf/brainforest/blob/master/server.dev.js?ts=2#L15), replace the filler values with your corresponding merchantId, publicKey, and privateKey.
+
+Start the server with `npm run start:dev`, then visit `http://localhost:3000` in your browser.
+
+Et voila!
 
 _To use **brainforest** in your project:_
 
