@@ -17,7 +17,7 @@ This project is (currently) a reference implementation for adding Braintree to a
 
 ## Usage
 
-To run the demo locally:
+_To run the demo locally:_
 
 ```
 git clone https://github.com/ellismarkf/brainforest.git
@@ -27,4 +27,6 @@ npm run start:dev
 ```
 Then visit `http://localhost:3000` in your browser.
 
-To use **brainforest** in your project, study (copy) the source code and implement (paste) as necessary.  It's my goal to eventually publish this as an npm module, such that it can be imported into a project and "Just Work", but it's not at that stage yet.
+_To use **brainforest** in your project:_
+
+Study (copy) the source code and implement (paste) as necessary.  It's my goal to eventually publish this as an npm module, such that it can be imported into a project and "Just Work", but it's not at that stage yet.
