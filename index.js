@@ -4,13 +4,13 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import weddingApp from './reducers'
+import brainforest from './reducers'
 import DevTools from './components/DevTools'
 import App from './components/App'
 import './style/styles.less'
 
 const store = createStore(
-	weddingApp,
+	brainforest,
 	compose(
 		applyMiddleware(thunk),
 		DevTools.instrument()
