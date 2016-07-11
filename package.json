@@ -1,7 +1,7 @@
 {
-  "name": "wedding-site",
+  "name": "brainforest",
   "version": "1.0.0",
-  "description": "app for accepting wedding rsvp's and monetary contributions",
+  "description": "react/redux reference implementation of braintree's drop-in credit card payment UI",
   "engines": {
     "node": "5.10.1",
     "npm": "3.8.3"
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ellismarkf/wedding-site.git"
+    "url": "https://github.com/ellismarkf/brainforest"
   },
   "author": "ellismarkf",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ellismarkf/wedding-site/issues"
+    "url": "https://github.com/ellismarkf/brainforest/issues"
   },
-  "homepage": "https://github.com/ellismarkf/wedding-site#readme",
+  "homepage": "https://github.com/ellismarkf/brainforest",
   "dependencies": {
     "alite": "^0.1.4",
     "babel-core": "^6.7.2",
