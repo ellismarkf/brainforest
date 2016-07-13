@@ -8,7 +8,7 @@ This project is (currently) a reference implementation for adding Braintree to a
 
 ## overview
 
-**brainforest** is essentially a [direct tokenization implementation](https://developers.braintreepayments.com/reference/client-reference/javascript/v2/credit-cards#credit-card-direct-tokenization) of Braintree's client API, powered by a Node server that connects to Braintree's server API.  It uses some of Braintree's other open source projects, specifically [card-validator](https://github.com/braintree/card-validator), to handle (you guessed it) credit card validation, and also borrows heavily from Braintree's drop-in UI CSS.
+**brainforest** is essentially a [direct tokenization implementation](https://developers.braintreepayments.com/reference/client-reference/javascript/v2/credit-cards#credit-card-direct-tokenization) of Braintree's [client SDK](https://github.com/braintree/braintree-web), powered by a Node server that integrates with Braintree's gateway via their [server API](https://github.com/braintree/braintree_node).  It uses some of Braintree's other open source projects, specifically [card-validator](https://github.com/braintree/card-validator), to handle (you guessed it) credit card validation, and also borrows heavily from Braintree's drop-in UI CSS.
 
 ### Features
 - Live validation
