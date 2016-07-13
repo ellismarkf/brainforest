@@ -1,6 +1,6 @@
 # brainforest
 
-[Braintree](https://www.braintreepayments.com/) provides a suite of tools to enable easy payment processing in an application, including a drop-in UI that validates credit card info and integrates with PayPal.  The simplest version of that UI uses query selectors to insert a pre-built form into the DOM.  If your view code is already manipulating the DOM imperatively, the drop-in UI is a great git, but if your application is built with React, using the drop-in UI means losing the power of describing UI as a function of data.
+[Braintree](https://www.braintreepayments.com/) provides a suite of tools to enable easy payment processing in an application, including a drop-in UI that validates credit card info and integrates with PayPal.  The simplest version of that UI uses query selectors to insert a pre-built form into the DOM.  If your view code is already manipulating the DOM imperatively, the drop-in UI is a great fit, but if your application is built with React, using the drop-in UI means losing the power of describing UI as a function of data.
 
 Other projects have already implemented [React wrappers around the drop-in UI](https://github.com/jeffcarp/braintree-react), but that doesn't really address the core paradigm discrepancy.  
 
